@@ -22,3 +22,9 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+*.swp
+*.yml
+.DS_Store
+c.out
+c.out.tmp

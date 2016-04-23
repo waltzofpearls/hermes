@@ -1,27 +1,51 @@
-String readString;
+#include <AFMotor.h>
+
+AF_DCMotor motorFrontLeft(3);
+AF_DCMotor motorFrontRight(2);
+AF_DCMotor motorRearLeft(4);
+AF_DCMotor motorRearRight(1);
+
+String serialInput = "";
 
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);           // set up Serial library at 9600 bps
-  Serial.println("Motor party!");
+  Serial.begin(9600);
+
+  motorFrontLeft.setSpeed(100);
+  motorFrontRight.setSpeed(100);
+  motorRearLeft.setSpeed(100);
+  motorRearRight.setSpeed(100);
+
+  motorFrontLeft.run(RELEASE);
+  motorFrontRight.run(RELEASE);
+  motorRearLeft.run(RELEASE);
+  motorRearRight.run(RELEASE);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  Serial.println("Hi There!");
-  delay(1000);
-
   while (Serial.available()) {
-    delay(3);  //delay to allow buffer to fill 
+    delay(3);
     if (Serial.available() > 0) {
-      char c = Serial.read();  //gets one byte from serial buffer
-      readString += c; //makes the string readString
+      char c = Serial.read();
+      serialInput += c;
     } 
   }
-
-  if (readString.length() > 0) {
-    Serial.println(readString);
+  if (serialInput.length() > 0) {
+    if (serialInput == "forward") {
+      motorFrontLeft.run(FORWARD);
+      motorFrontRight.run(FORWARD);
+      motorRearLeft.run(FORWARD);
+      motorRearRight.run(FORWARD);
+    } else if (serialInput == "backward") {
+      motorFrontLeft.run(BACKWARD);
+      motorFrontRight.run(BACKWARD);
+      motorRearLeft.run(BACKWARD);
+      motorRearRight.run(BACKWARD);
+    } else {
+      motorFrontLeft.run(RELEASE);
+      motorFrontRight.run(RELEASE);
+      motorRearLeft.run(RELEASE);
+      motorRearRight.run(RELEASE);
+    }
   }
-
-  readString = "";
+  serialInput = "";
 }
