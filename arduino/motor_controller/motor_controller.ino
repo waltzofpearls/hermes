@@ -1,51 +1,59 @@
-#include <AFMotor.h>
+int motor2_dir1 = 5;
+int motor2_dir2 = 4;
+int motor2_pwm  = 9;
 
-AF_DCMotor motorFrontLeft(3);
-AF_DCMotor motorFrontRight(2);
-AF_DCMotor motorRearLeft(4);
-AF_DCMotor motorRearRight(1);
+int motor1_dir1 = 3;
+int motor1_dir2 = 2;
+int motor1_pwm  = 6;
 
-String serialInput = "";
+int motor4_dir1 = 13;
+int motor4_dir2 = 12;
+int motor4_pwm  = 11;
 
-void setup() {
-  Serial.begin(9600);
+int motor3_dir1 = 8;
+int motor3_dir2 = 7;
+int motor3_pwm  = 10;
 
-  motorFrontLeft.setSpeed(100);
-  motorFrontRight.setSpeed(100);
-  motorRearLeft.setSpeed(100);
-  motorRearRight.setSpeed(100);
+void setup()
+{
+  pinMode(motor1_dir1, OUTPUT);
+  pinMode(motor1_dir2, OUTPUT);
+  pinMode(motor1_pwm, OUTPUT);
 
-  motorFrontLeft.run(RELEASE);
-  motorFrontRight.run(RELEASE);
-  motorRearLeft.run(RELEASE);
-  motorRearRight.run(RELEASE);
+  pinMode(motor2_dir1, OUTPUT);
+  pinMode(motor2_dir2, OUTPUT);
+  pinMode(motor2_pwm, OUTPUT);
+
+  pinMode(motor3_dir1, OUTPUT);
+  pinMode(motor3_dir2, OUTPUT);
+  pinMode(motor3_pwm, OUTPUT);
+
+  pinMode(motor4_dir1, OUTPUT);
+  pinMode(motor4_dir2, OUTPUT);
+  pinMode(motor4_pwm, OUTPUT);
+
+  digitalWrite(motor1_dir1, 0);
+  digitalWrite(motor1_dir2, 1);
+  digitalWrite(motor1_pwm, 1);
+
+  digitalWrite(motor2_dir1, 0);
+  digitalWrite(motor2_dir2, 1);
+  digitalWrite(motor2_pwm, 1);
+
+  digitalWrite(motor3_dir1, 0);
+  digitalWrite(motor3_dir2, 1);
+  digitalWrite(motor3_pwm, 1);
+
+  digitalWrite(motor4_dir1, 0);
+  digitalWrite(motor4_dir2, 1);
+  digitalWrite(motor4_pwm, 1);
 }
 
-void loop() {
-  while (Serial.available()) {
-    delay(3);
-    if (Serial.available() > 0) {
-      char c = Serial.read();
-      serialInput += c;
-    } 
-  }
-  if (serialInput.length() > 0) {
-    if (serialInput == "forward") {
-      motorFrontLeft.run(FORWARD);
-      motorFrontRight.run(FORWARD);
-      motorRearLeft.run(FORWARD);
-      motorRearRight.run(FORWARD);
-    } else if (serialInput == "backward") {
-      motorFrontLeft.run(BACKWARD);
-      motorFrontRight.run(BACKWARD);
-      motorRearLeft.run(BACKWARD);
-      motorRearRight.run(BACKWARD);
-    } else {
-      motorFrontLeft.run(RELEASE);
-      motorFrontRight.run(RELEASE);
-      motorRearLeft.run(RELEASE);
-      motorRearRight.run(RELEASE);
-    }
-  }
-  serialInput = "";
+void loop()
+{
+  analogWrite(motor1_pwm, 128);
+  analogWrite(motor2_pwm, 128);
+  analogWrite(motor3_pwm, 128);
+  analogWrite(motor4_pwm, 128);
+  delay(500);
 }
