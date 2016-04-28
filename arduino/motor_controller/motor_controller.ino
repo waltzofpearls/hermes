@@ -1,59 +1,106 @@
-int motor2_dir1 = 5;
-int motor2_dir2 = 4;
-int motor2_pwm  = 9;
+#include <RBD_Motor.h>
+#include <RBD_SerialManager.h>
 
-int motor1_dir1 = 3;
-int motor1_dir2 = 2;
-int motor1_pwm  = 6;
+// RBD::Motor constructor(pwm_pin, forward_pin, reverse_pin)
+RBD::Motor motFrontL(11, 12, 13);
+RBD::Motor motFrontR(9, 4, 5);
+RBD::Motor motRearL(10, 7, 8);
+RBD::Motor motRearR(6, 2, 3);
+RBD::SerialManager ser;
 
-int motor4_dir1 = 13;
-int motor4_dir2 = 12;
-int motor4_pwm  = 11;
+void forward() {
+  motFrontL.forward();
+  motFrontR.forward();
+  motRearL.forward();
+  motRearR.forward();
+  motFrontL.setSpeedPercent(50);
+  motFrontR.setSpeedPercent(50);
+  motRearL.setSpeedPercent(50);
+  motRearR.setSpeedPercent(50);
+  delay(250);
+}
 
-int motor3_dir1 = 8;
-int motor3_dir2 = 7;
-int motor3_pwm  = 10;
+void reverse() {
+  motFrontL.reverse();
+  motFrontR.reverse();
+  motRearL.reverse();
+  motRearR.reverse();
+  motFrontL.setSpeedPercent(50);
+  motFrontR.setSpeedPercent(50);
+  motRearL.setSpeedPercent(50);
+  motRearR.setSpeedPercent(50);
+  delay(250);
+}
+
+void turnLeft() {
+  if (motFrontL.isForward()) {
+    motFrontL.reverse();
+    motRearL.reverse();
+    motFrontR.forward();
+    motRearR.forward();
+  } else {
+    motFrontL.forward();
+    motRearL.forward();
+    motFrontR.reverse();
+    motRearR.reverse();
+  }
+  motFrontL.setSpeedPercent(50);
+  motFrontR.setSpeedPercent(50);
+  motRearL.setSpeedPercent(50);
+  motRearR.setSpeedPercent(50);
+  delay(250);
+}
+
+void turnRight() {
+  if (motFrontL.isForward()) {
+    motFrontL.forward();
+    motRearL.forward();
+    motFrontR.reverse();
+    motRearR.reverse();
+  } else {
+    motFrontL.reverse();
+    motRearL.reverse();
+    motFrontR.forward();
+    motRearR.forward();
+  }
+  motFrontL.setSpeedPercent(50);
+  motFrontR.setSpeedPercent(50);
+  motRearL.setSpeedPercent(50);
+  motRearR.setSpeedPercent(50);
+  delay(250);
+}
+
+void stop() {
+  motFrontL.off();
+  motFrontR.off();
+  motRearL.off();
+  motRearR.off();
+  delay(250);
+}
 
 void setup()
 {
-  pinMode(motor1_dir1, OUTPUT);
-  pinMode(motor1_dir2, OUTPUT);
-  pinMode(motor1_pwm, OUTPUT);
-
-  pinMode(motor2_dir1, OUTPUT);
-  pinMode(motor2_dir2, OUTPUT);
-  pinMode(motor2_pwm, OUTPUT);
-
-  pinMode(motor3_dir1, OUTPUT);
-  pinMode(motor3_dir2, OUTPUT);
-  pinMode(motor3_pwm, OUTPUT);
-
-  pinMode(motor4_dir1, OUTPUT);
-  pinMode(motor4_dir2, OUTPUT);
-  pinMode(motor4_pwm, OUTPUT);
-
-  digitalWrite(motor1_dir1, 0);
-  digitalWrite(motor1_dir2, 1);
-  digitalWrite(motor1_pwm, 1);
-
-  digitalWrite(motor2_dir1, 0);
-  digitalWrite(motor2_dir2, 1);
-  digitalWrite(motor2_pwm, 1);
-
-  digitalWrite(motor3_dir1, 0);
-  digitalWrite(motor3_dir2, 1);
-  digitalWrite(motor3_pwm, 1);
-
-  digitalWrite(motor4_dir1, 0);
-  digitalWrite(motor4_dir2, 1);
-  digitalWrite(motor4_pwm, 1);
+  ser.start();
 }
 
 void loop()
 {
-  analogWrite(motor1_pwm, 128);
-  analogWrite(motor2_pwm, 128);
-  analogWrite(motor3_pwm, 128);
-  analogWrite(motor4_pwm, 128);
-  delay(500);
+  if (ser.onReceive()) {
+    if (ser.isCmd("forward")) {
+      forward();
+      ser.println("forward!");
+    } else if (ser.isCmd("reverse")) {
+      reverse();
+      ser.println("reverse!");
+    } else if (ser.isCmd("turnleft")) {
+      turnLeft();
+      ser.println("turn left!");
+    } else if (ser.isCmd("turnright")) {
+      turnRight();
+      ser.println("turn right!");
+    } else {
+      stop();
+      ser.println("stop!");
+    }
+  }
 }
