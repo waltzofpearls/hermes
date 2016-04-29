@@ -13,10 +13,10 @@ void forward() {
   motFrontR.forward();
   motRearL.forward();
   motRearR.forward();
-  motFrontL.setSpeedPercent(50);
-  motFrontR.setSpeedPercent(50);
-  motRearL.setSpeedPercent(50);
-  motRearR.setSpeedPercent(50);
+  motFrontL.setSpeedPercent(95);
+  motFrontR.setSpeedPercent(95);
+  motRearL.setSpeedPercent(95);
+  motRearR.setSpeedPercent(95);
   delay(250);
 }
 
@@ -25,48 +25,64 @@ void reverse() {
   motFrontR.reverse();
   motRearL.reverse();
   motRearR.reverse();
-  motFrontL.setSpeedPercent(50);
-  motFrontR.setSpeedPercent(50);
-  motRearL.setSpeedPercent(50);
-  motRearR.setSpeedPercent(50);
+  motFrontL.setSpeedPercent(95);
+  motFrontR.setSpeedPercent(95);
+  motRearL.setSpeedPercent(95);
+  motRearR.setSpeedPercent(95);
   delay(250);
 }
 
 void turnLeft() {
-  if (motFrontL.isForward()) {
-    motFrontL.reverse();
-    motRearL.reverse();
-    motFrontR.forward();
-    motRearR.forward();
-  } else {
-    motFrontL.forward();
-    motRearL.forward();
-    motFrontR.reverse();
-    motRearR.reverse();
+  if (motFrontL.isReverse() && motFrontR.isForward()) {
+    ser.println("already turning left, do nothing");
+    return;
   }
-  motFrontL.setSpeedPercent(50);
-  motFrontR.setSpeedPercent(50);
-  motRearL.setSpeedPercent(50);
-  motRearR.setSpeedPercent(50);
+
+  if (motFrontL.isReverse() && motFrontR.isReverse()) {
+    ser.println("turning left while reversing");
+    helpTurnRight();
+    return;
+  }
+
+  helpTurnLeft();
+}
+
+void helpTurnLeft() {
+  motFrontL.reverse();
+  motRearL.reverse();
+  motFrontR.forward();
+  motRearR.forward();
+  motFrontL.setSpeedPercent(95);
+  motRearL.setSpeedPercent(95);
+  motFrontR.setSpeedPercent(95);
+  motRearR.setSpeedPercent(95);
   delay(250);
 }
 
 void turnRight() {
-  if (motFrontL.isForward()) {
-    motFrontL.forward();
-    motRearL.forward();
-    motFrontR.reverse();
-    motRearR.reverse();
-  } else {
-    motFrontL.reverse();
-    motRearL.reverse();
-    motFrontR.forward();
-    motRearR.forward();
+  if (motFrontL.isForward() && motFrontR.isReverse()) {
+    ser.println("already turning right, do nothing");
+    return;
   }
-  motFrontL.setSpeedPercent(50);
-  motFrontR.setSpeedPercent(50);
-  motRearL.setSpeedPercent(50);
-  motRearR.setSpeedPercent(50);
+
+  if (motFrontL.isReverse() && motFrontR.isReverse()) {
+    ser.println("turning right while reversing");
+    helpTurnLeft();
+    return;
+  }
+
+  helpTurnRight();
+}
+
+void helpTurnRight() {
+  motFrontL.forward();
+  motRearL.forward();
+  motFrontR.reverse();
+  motRearR.reverse();
+  motFrontL.setSpeedPercent(95);
+  motRearL.setSpeedPercent(95);
+  motFrontR.setSpeedPercent(95);
+  motRearR.setSpeedPercent(95);
   delay(250);
 }
 
@@ -86,16 +102,16 @@ void setup()
 void loop()
 {
   if (ser.onReceive()) {
-    if (ser.isCmd("forward")) {
+    if (ser.isCmd("forward") || ser.isCmd("f")) {
       forward();
       ser.println("forward!");
-    } else if (ser.isCmd("reverse")) {
+    } else if (ser.isCmd("reverse") || ser.isCmd("b")) {
       reverse();
       ser.println("reverse!");
-    } else if (ser.isCmd("turnleft")) {
+    } else if (ser.isCmd("turnleft") || ser.isCmd("l")) {
       turnLeft();
       ser.println("turn left!");
-    } else if (ser.isCmd("turnright")) {
+    } else if (ser.isCmd("turnright") || ser.isCmd("r")) {
       turnRight();
       ser.println("turn right!");
     } else {
