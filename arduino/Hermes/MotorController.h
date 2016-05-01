@@ -1,5 +1,5 @@
-#ifndef Hermes_h
-#define Hermes_h
+#ifndef MotorController_h
+#define MotorController_h
 
 #include "RBD_Motor.h"
 
@@ -20,10 +20,10 @@
 #define MOTOR_RR_FORWARD 2
 #define MOTOR_RR_REVERSE 3
 
-class Hermes
+class MotorController
 {
   public:
-    Hermes();
+    MotorController();
     void forward();
     void reverse();
     void turnLeft();

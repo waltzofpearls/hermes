@@ -1,8 +1,7 @@
 #include "Arduino.h"
-#include "RBD_Motor.h"
-#include "Hermes.h"
+#include "MotorController.h"
 
-Hermes::Hermes()
+MotorController::MotorController()
   // RBD::Motor constructor(pwm_pin, forward_pin, reverse_pin)
   : _motorFrontL(MOTOR_FL_PWM, MOTOR_FL_FORWARD, MOTOR_FL_REVERSE)
   , _motorFrontR(MOTOR_FR_PWM, MOTOR_FR_FORWARD, MOTOR_FR_REVERSE)
@@ -10,7 +9,7 @@ Hermes::Hermes()
   , _motorRearR(MOTOR_RR_PWM, MOTOR_RR_FORWARD, MOTOR_RR_REVERSE)
 {}
 
-void Hermes::forward() {
+void MotorController::forward() {
   _motorFrontL.forward();
   _motorFrontR.forward();
   _motorRearL.forward();
@@ -24,7 +23,7 @@ void Hermes::forward() {
   delay(250);
 }
 
-void Hermes::reverse() {
+void MotorController::reverse() {
   _motorFrontL.reverse();
   _motorFrontR.reverse();
   _motorRearL.reverse();
@@ -38,7 +37,7 @@ void Hermes::reverse() {
   delay(250);
 }
 
-void Hermes::turnLeft() {
+void MotorController::turnLeft() {
   if (_motorFrontL.isReverse() && _motorFrontR.isForward()) {
     // ser.println("already turning left, do nothing");
     return;
@@ -53,7 +52,7 @@ void Hermes::turnLeft() {
   _helpTurnLeft();
 }
 
-void Hermes::_helpTurnLeft() {
+void MotorController::_helpTurnLeft() {
   _motorFrontL.reverse();
   _motorRearL.reverse();
   _motorFrontR.forward();
@@ -67,7 +66,7 @@ void Hermes::_helpTurnLeft() {
   delay(250);
 }
 
-void Hermes::turnRight() {
+void MotorController::turnRight() {
   if (_motorFrontL.isForward() && _motorFrontR.isReverse()) {
     // ser.println("already turning right, do nothing");
     return;
@@ -82,7 +81,7 @@ void Hermes::turnRight() {
   _helpTurnRight();
 }
 
-void Hermes::_helpTurnRight() {
+void MotorController::_helpTurnRight() {
   _motorFrontL.forward();
   _motorRearL.forward();
   _motorFrontR.reverse();
@@ -96,7 +95,7 @@ void Hermes::_helpTurnRight() {
   delay(250);
 }
 
-void Hermes::stop() {
+void MotorController::stop() {
   _motorFrontL.off();
   _motorFrontR.off();
   _motorRearL.off();
