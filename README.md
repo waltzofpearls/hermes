@@ -25,6 +25,10 @@ and some machine learning to the rover, so it will have some limited intelligenc
 * [Raspberry Pi Camera](https://www.buyapi.ca/product/raspberry-pi-camera-board-add-on/)
 * [300mm Flex Cable for Raspberry Pi Camera](http://www.robotshop.com/ca/en/300mm-flex-cable-raspberry-pi-camera.html)
 * [MoPi: Mobile Pi Power (Stackable Version)](https://www.buyapi.ca/product/mopi-mobile-pi-power-stackable-version/)
+* [1m USB Cable Type A to B](http://www.robotshop.com/ca/en/1m-usb-cable-type-a-to-b.html)
+* [Geekroo PWM Servo PiCobber](http://www.robotshop.com/ca/en/pwm-servo-driver-picobber-raspberry-pi-hat.html)
+* [DFRobot 65mm Rubber Wheel - Silver](http://www.robotshop.com/ca/en/dfrobot-rubber-wheel-pair-silver.html)
+* [DFRobot Mounting Hub for 65mm Wheels](http://www.robotshop.com/ca/en/mounting-hub-pair-dfrobot-wheels.html)
 
 ### Software
 
