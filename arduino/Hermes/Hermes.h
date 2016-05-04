@@ -13,6 +13,7 @@ class Hermes
   private:
     RBD::SerialManager _serial;
     MotorController _motors;
+    uint8_t _translateSerialCommand();
 };
 
 #endif

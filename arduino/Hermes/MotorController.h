@@ -2,6 +2,7 @@
 #define MotorController_h
 
 #include "RBD_Motor.h"
+#include "RBD_SerialManager.h"
 
 // Motor front left
 #define MOTOR_FL_PWM 11
@@ -20,22 +21,31 @@
 #define MOTOR_RR_FORWARD 2
 #define MOTOR_RR_REVERSE 3
 
+#define NOOP 0
+#define FORWARD 1
+#define BACKWARD 2
+#define STOP 3
+#define TURN_LEFT 4
+#define TURN_RIGHT 5
+
+
 class MotorController
 {
   public:
-    MotorController();
+    MotorController(RBD::SerialManager);
     void forward();
-    void reverse();
+    void backward();
+    void stop();
     void turnLeft();
     void turnRight();
-    void stop();
   private:
-    void _helpTurnLeft();
-    void _helpTurnRight();
     RBD::Motor _motorFrontL;
     RBD::Motor _motorFrontR;
     RBD::Motor _motorRearL;
     RBD::Motor _motorRearR;
+    RBD::SerialManager _serial;
+    void _helpTurnLeft();
+    void _helpTurnRight();
 };
 
 #endif
