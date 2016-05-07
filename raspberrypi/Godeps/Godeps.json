@@ -1,0 +1,11 @@
+{
+	"ImportPath": "github.com/waltzofpearls/hermes/raspberrypi",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v66",
+	"Deps": [
+		{
+			"ImportPath": "github.com/tarm/serial",
+			"Rev": "37be519d49878d0098e34fb614136b81e6c87861"
+		}
+	]
+}
