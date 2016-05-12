@@ -4,7 +4,9 @@ import (
 	"bufio"
 	"errors"
 	"io/ioutil"
+	"os"
 	"strings"
+	"time"
 
 	"github.com/tarm/serial"
 )
@@ -15,7 +17,6 @@ const (
 
 type Arduino struct {
 	Serial *serial.Port
-	Reader *bufio.Reader
 }
 
 func NewArduino() (*Arduino, error) {
@@ -35,7 +36,7 @@ func (a *Arduino) initSerial() (*Arduino, error) {
 	if err != nil {
 		return nil, err
 	}
-	a.Reader = bufio.NewReader(a.Serial)
+	time.Sleep(time.Second * 1)
 	return a, nil
 }
 
@@ -56,6 +57,17 @@ func (a *Arduino) isArduino(device string) bool {
 		strings.Contains(device, "ttyUSB")
 }
 
+func (a *Arduino) Listen() <-chan string {
+	output := make(chan string)
+	go func() {
+		scanner := bufio.NewScanner(a.Serial)
+		for scanner.Scan() {
+			output <- scanner.Text()
+		}
+	}()
+	return output
+}
+
 func (a *Arduino) Send(data string) error {
 	_, err := a.Serial.Write([]byte(data + "\n"))
 	if err != nil {
@@ -64,17 +76,15 @@ func (a *Arduino) Send(data string) error {
 	return nil
 }
 
-func (a *Arduino) Receive() (string, error) {
-	reply, _, err := a.Reader.ReadLine()
-	if err != nil {
-		return "", nil
-	}
-	return string(reply), nil
-}
-
-func (a *Arduino) SendAndReceive(data string) (string, error) {
-	if err := a.Send(data); err != nil {
-		return "", nil
-	}
-	return a.Receive()
+func (a *Arduino) WaitForStdin() <-chan error {
+	serErr := make(chan error)
+	go func() {
+		scanner := bufio.NewScanner(os.Stdin)
+		for scanner.Scan() {
+			if err := a.Send(scanner.Text()); err != nil {
+				serErr <- err
+			}
+		}
+	}()
+	return serErr
 }
