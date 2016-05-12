@@ -3,9 +3,8 @@ package main
 import (
 	"bufio"
 	"log"
+	"os"
 	"time"
-
-	"github.com/tarm/serial"
 )
 
 func main() {
@@ -13,34 +12,41 @@ func main() {
 }
 
 func talkToArduino() {
-	// c := &serial.Config{Name: "/dev/tty.usbmodemFA131", Baud: 9600}
-	c := &serial.Config{Name: "/dev/ttyACM0", Baud: 115200}
-	s, err := serial.OpenPort(c)
+	a, err := NewArduino()
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	time.Sleep(time.Second * 1)
+	log.Println("Ready to send commands.")
+
+	output := make(chan string)
+	serErr := make(chan error)
+
 	go func() {
-		reader := bufio.NewReader(s)
-		for {
-			reply, _, err := reader.ReadLine()
-			if err != nil {
-				log.Fatal(err)
+		scanner := bufio.NewScanner(a.Serial)
+		log.Println("Serial scanner started.")
+		for scanner.Scan() {
+			output <- scanner.Text()
+		}
+		log.Println("Serial scanner ended.")
+	}()
+
+	go func() {
+		scanner := bufio.NewScanner(os.Stdin)
+		for scanner.Scan() {
+			if err := a.Send(scanner.Text()); err != nil {
+				serErr <- err
 			}
-			log.Println(string(reply))
-			time.Sleep(5 * time.Millisecond)
 		}
 	}()
 
-	_, err = s.Write([]byte("f\n"))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	time.Sleep(5 * time.Second)
-
-	_, err = s.Write([]byte("s\n"))
-	if err != nil {
-		log.Fatal(err)
+	for {
+		select {
+		case o := <-output:
+			log.Println(o)
+		case e := <-serErr:
+			log.Fatalln(e)
+		}
 	}
 }
