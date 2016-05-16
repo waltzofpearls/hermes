@@ -1,15 +1,30 @@
 package main
 
-import "log"
+import (
+	"log"
+	"time"
+)
 
 func main() {
-	talkToArduino()
+	// talkToArduino()
+
+	c, err := NewCamera()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	c.PanLeft(30)
+	time.Sleep(time.Second)
+
+	c.PanRight(30)
+	time.Sleep(time.Second)
+
+	c.ResetPosition()
 }
 
 func talkToArduino() {
 	a, err := NewArduino()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
 	log.Println("Ready to send commands...")
 

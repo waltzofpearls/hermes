@@ -4,8 +4,16 @@
 	"GodepVersion": "v67",
 	"Deps": [
 		{
+			"ImportPath": "bitbucket.org/gmcbay/i2c",
+			"Rev": "1235f1776ee749f0eaeb6de69d8804a6dd70d9d5"
+		},
+		{
 			"ImportPath": "github.com/tarm/serial",
 			"Rev": "37be519d49878d0098e34fb614136b81e6c87861"
+		},
+		{
+			"ImportPath": "github.com/waltzofpearls/go-servo-picobber",
+			"Rev": "5295f680804e09d2bc6a602ebdfe0a92b1721899"
 		}
 	]
 }

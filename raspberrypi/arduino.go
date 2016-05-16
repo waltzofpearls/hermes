@@ -21,23 +21,27 @@ type Arduino struct {
 
 func NewArduino() (*Arduino, error) {
 	a := &Arduino{}
-	return a.initSerial()
-}
-
-func (a *Arduino) initSerial() (*Arduino, error) {
-	device, err := a.findArduino()
-	if err != nil {
+	if err := a.initSerial(); err != nil {
 		return nil, err
 	}
-	a.Serial, err = serial.OpenPort(&serial.Config{
+	return a, nil
+}
+
+func (a *Arduino) initSerial() error {
+	device, err := a.findArduino()
+	if err != nil {
+		return err
+	}
+	ser, err := serial.OpenPort(&serial.Config{
 		Name: device,
 		Baud: ArduinoSerialBaud,
 	})
 	if err != nil {
-		return nil, err
+		return err
 	}
 	time.Sleep(time.Second * 1)
-	return a, nil
+	a.Serial = ser
+	return nil
 }
 
 func (a *Arduino) findArduino() (string, error) {
