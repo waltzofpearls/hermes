@@ -1,5 +1,7 @@
 # hermes
 
+<img align="left" src="https://cloud.githubusercontent.com/assets/965430/15920452/d1d317f0-2dce-11e6-8704-7390fb0681e3.png">
+
 Hermes is a personal hobby robot rover project. The rover platform is based on
 a 4WD chassis controlled by an Arduino motor shield. Hermes has a Respberry Pi
 as its brain. The Pi is responsible for communicating with a controller device
@@ -16,7 +18,7 @@ and some machine learning to the rover, so it will have some limited intelligenc
 
 * [DFRobot 4WD Mobile Platform](http://www.robotshop.com/ca/en/dfrobot-4wd-arduino-mobile-platform.html)
 * [Arduino Uno Rev 3](http://www.robotshop.com/ca/en/arduino-uno-usb-microcontroller-rev-3.html)
-* [Waveshare Motor Driver Shieldfor](http://www.robotshop.com/ca/en/600-ma-dual-h-bridge-motor-driver-shieldfor-dc-steppers-l293d.html)
+* [Waveshare Motor Driver Shield](http://www.robotshop.com/ca/en/600-ma-dual-h-bridge-motor-driver-shieldfor-dc-steppers-l293d.html)
 * [Lynxmotion Pan and Tilt Kit](http://www.robotshop.com/ca/en/lynxmotion-pan-and-tilt-kit-aluminium2.html)
 * [Adafruit 6 AA Battery Holder](http://www.robotshop.com/ca/en/adafruit-battery-holder-barrel-jack.html)
 * [Terminal to 2.1mm Barrel Jack](http://www.robotshop.com/ca/en/terminal-barrel-jack.html)
