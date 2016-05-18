@@ -2,17 +2,19 @@
 
 <img align="left" src="https://cloud.githubusercontent.com/assets/965430/15920452/d1d317f0-2dce-11e6-8704-7390fb0681e3.png">
 
-Hermes is a personal hobby robot rover project. The rover platform is based on
-a 4WD chassis controlled by an Arduino motor shield. Hermes has a Respberry Pi
-as its brain. The Pi is responsible for communicating with a controller device
-through WI-FI direct, processing and streaming video, sending commands to
-Arduino, and many more.
+Hermes is a personal hobby robot rover project. It's based on a 4WD chassis
+driven by an Arduino board and a motor shield. Hermes also uses a Respberry Pi
+as its brain. The Pi is responsible for exchanging commands with the Arduino
+board, communicating with controlling device like a mobile phone through WI-FI
+direct protocol, processing and streaming video, and many more.
 
-Phase one aims to build a cell phone or tablet controlled robot rover without
-any intelligence. The rover will be completely rely on the pilot's control.
+Phase one of this project is aiming for building a cell phone or tablet controlled
+robotic rover without any intelligence. The controlling of the rover will be
+completely relying on a pilot.
 
-In the following phases, I will add solar panel, obstacle avoidance, more sensors
-and some machine learning to the rover, so it will have some limited intelligence.
+In the following phases, I will improve the rover with solar panel, obstacle
+avoidance, more sensors and some machine learning, so it will have some limited
+intelligence.
 
 ### Hardware
 
@@ -34,7 +36,7 @@ and some machine learning to the rover, so it will have some limited intelligenc
 
 ### Software
 
-* [Arduino language (C/C++)](https://www.arduino.cc/en/Reference/HomePage)
-* [Go](https://golang.org/)
+* [Arduino sketch](https://www.arduino.cc/en/Reference/HomePage) (C++)
+* [Go](https://golang.org/) with `GOOS=linux GOARCH=arm` for [Raspbian](https://www.raspbian.org/)
 
 More details and code to come as I'm building the robot.
