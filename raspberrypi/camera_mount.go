@@ -16,19 +16,19 @@ const (
 	TiltMax int = 580
 )
 
-type Camera struct {
+type CameraMount struct {
 	Servo *servo.Servo
 }
 
-func NewCamera() (*Camera, error) {
-	c := &Camera{}
-	if err := c.initMount(); err != nil {
+func NewCameraMount() (*CameraMount, error) {
+	c := &initCameraMount{}
+	if err := c.init(); err != nil {
 		return nil, err
 	}
 	return c, nil
 }
 
-func (c *Camera) initMount() error {
+func (c *CameraMount) initCameraMount() error {
 	sv, err := servo.NewServo()
 	if err != nil {
 		return err
@@ -38,7 +38,7 @@ func (c *Camera) initMount() error {
 	return nil
 }
 
-func (c *Camera) PanLeft(pos int) error {
+func (c *CameraMount) PanLeft(pos int) error {
 	newVal := c.scaleNumber(pos, 0, 90, PanMin, PanMid)
 	if err := c.Servo.SetPwm(ServoChannelPan, 0, newVal); err != nil {
 		return err
@@ -46,7 +46,7 @@ func (c *Camera) PanLeft(pos int) error {
 	return nil
 }
 
-func (c *Camera) PanRight(pos int) error {
+func (c *CameraMount) PanRight(pos int) error {
 	newVal := c.scaleNumber(pos, 0, 90, PanMid, PanMax)
 	if err := c.Servo.SetPwm(ServoChannelPan, 0, newVal); err != nil {
 		return err
@@ -54,15 +54,7 @@ func (c *Camera) PanRight(pos int) error {
 	return nil
 }
 
-func (c *Camera) TiltDown(pos int) error {
-	newVal := c.scaleNumber(pos, 0, 90, TiltMin, TiltMid)
-	if err := c.Servo.SetPwm(ServoChannelTilt, 0, newVal); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Camera) TiltUp(pos int) error {
+func (c *CameraMount) TiltUp(pos int) error {
 	newVal := c.scaleNumber(pos, 0, 90, TiltMid, TiltMax)
 	if err := c.Servo.SetPwm(ServoChannelTilt, 0, newVal); err != nil {
 		return err
@@ -70,7 +62,15 @@ func (c *Camera) TiltUp(pos int) error {
 	return nil
 }
 
-func (c *Camera) scaleNumber(valueIn, baseMin, baseMax, limitMin, limitMax int) int {
+func (c *CameraMount) TiltDown(pos int) error {
+	newVal := c.scaleNumber(pos, 0, 90, TiltMin, TiltMid)
+	if err := c.Servo.SetPwm(ServoChannelTilt, 0, newVal); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *CameraMount) scaleNumber(valueIn, baseMin, baseMax, limitMin, limitMax int) int {
 	if valueIn < baseMin {
 		valueIn = baseMin
 	}
@@ -80,7 +80,7 @@ func (c *Camera) scaleNumber(valueIn, baseMin, baseMax, limitMin, limitMax int) 
 	return ((limitMax - limitMin) * (valueIn - baseMin) / (baseMax - baseMin)) + limitMin
 }
 
-func (c *Camera) ResetPosition() error {
+func (c *CameraMount) ResetPosition() error {
 	if err := c.Servo.SetPwm(ServoChannelPan, 0, PanMid); err != nil {
 		return err
 	}

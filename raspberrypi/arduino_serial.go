@@ -15,19 +15,19 @@ const (
 	ArduinoSerialBaud int = 115200
 )
 
-type Arduino struct {
+type ArduinoSerial struct {
 	Serial *serial.Port
 }
 
-func NewArduino() (*Arduino, error) {
-	a := &Arduino{}
-	if err := a.initSerial(); err != nil {
+func NewArduinoSerial() (*ArduinoSerial, error) {
+	a := &ArduinoSerial{}
+	if err := a.initArduinoSerial(); err != nil {
 		return nil, err
 	}
 	return a, nil
 }
 
-func (a *Arduino) initSerial() error {
+func (a *ArduinoSerial) initArduinoSerial() error {
 	device, err := a.findArduino()
 	if err != nil {
 		return err
@@ -44,7 +44,7 @@ func (a *Arduino) initSerial() error {
 	return nil
 }
 
-func (a *Arduino) findArduino() (string, error) {
+func (a *ArduinoSerial) findArduino() (string, error) {
 	devices, _ := ioutil.ReadDir("/dev")
 	for _, d := range devices {
 		if a.isArduino(d.Name()) {
@@ -54,14 +54,14 @@ func (a *Arduino) findArduino() (string, error) {
 	return "", errors.New("Cannot find Arduino device.")
 }
 
-func (a *Arduino) isArduino(device string) bool {
+func (a *ArduinoSerial) isArduino(device string) bool {
 	return strings.Contains(device, "ttyACM") ||
 		strings.Contains(device, "tty.usbmodem") ||
 		strings.Contains(device, "tty.usbserial") ||
 		strings.Contains(device, "ttyUSB")
 }
 
-func (a *Arduino) Listen() <-chan string {
+func (a *ArduinoSerial) Listen() <-chan string {
 	output := make(chan string)
 	go func() {
 		scanner := bufio.NewScanner(a.Serial)
@@ -72,7 +72,7 @@ func (a *Arduino) Listen() <-chan string {
 	return output
 }
 
-func (a *Arduino) Send(data string) error {
+func (a *ArduinoSerial) Send(data string) error {
 	_, err := a.Serial.Write([]byte(data + "\n"))
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func (a *Arduino) Send(data string) error {
 	return nil
 }
 
-func (a *Arduino) WaitForStdin() <-chan error {
+func (a *ArduinoSerial) WaitForStdin() <-chan error {
 	serErr := make(chan error)
 	go func() {
 		scanner := bufio.NewScanner(os.Stdin)
